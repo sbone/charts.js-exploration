@@ -7,16 +7,17 @@
 </head>
 
 <body id="home">
-
-  <h1>charts.js</h1>
-  <canvas id="myChart"></canvas>
-  <button class="change-button-type" data-type="line">Line</button>
-  <button class="change-button-type" data-type="bar">Bar</button>
-  <button class="change-button-type" data-type="radar">Radar</button>
-  <button class="change-button-type" data-type="pie">Pie</button>
-  <button class="change-button-type" data-type="polarArea">Polar</button>
-  <button class="change-button-type" data-type="bubble">Bubble</button>
-  <button class="change-button-type" data-type="scatter">Scatter</button>
+  <div style="width: 50%; margin: 0 auto;">
+    <canvas id="myChart"></canvas>
+    <button class="change-button-type" data-type="line">Line</button>
+    <button class="change-button-type" data-type="bar">Bar</button>
+    <button class="change-button-type" data-type="radar">Radar</button>
+    <button class="change-button-type" data-type="pie">Pie</button>
+    <button class="change-button-type" data-type="polarArea">Polar</button>
+    <button class="change-button-type" data-type="bubble">Bubble</button>
+    <button class="change-button-type" data-type="scatter">Scatter</button>
+    <button id="add-dataset">Add dataset</button>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
@@ -60,13 +61,24 @@
       });
     });
 
+    $button = document.getElementById("add-dataset");
+
+    $button.addEventListener("click", function(ev) {
+      addDataset(baseConfig, secondDataset);
+    });
+
     const updateChartType = function(config, chartType) {
-      const newConfig = _.cloneDeep(config);
-      newConfig.data.datasets.unshift(secondDataset);
-      newConfig.type = chartType;
       chart.destroy();
-      chart = new Chart(ctx, { type: chartType, data: newConfig.data });
+      let newConfig = _.cloneDeep(config);
+      newConfig.type = chartType;
+      chart = new Chart(ctx, newConfig);
     };
+
+    const addDataset = function(config, newDataset) {
+      chart.data.datasets.unshift(newDataset);
+      chart.update();
+
+    }
   </script>
 </body>
 </html>
