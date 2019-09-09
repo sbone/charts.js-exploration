@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Charts</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body id="home">
+
+  <h1>charts.js</h1>
+  <canvas id="myChart"></canvas>
+  <button class="change-button-type" data-type="line">Line</button>
+  <button class="change-button-type" data-type="bar">Bar</button>
+  <button class="change-button-type" data-type="radar">Radar</button>
+  <button class="change-button-type" data-type="pie">Pie</button>
+  <button class="change-button-type" data-type="polarArea">Polar</button>
+  <button class="change-button-type" data-type="bubble">Bubble</button>
+  <button class="change-button-type" data-type="scatter">Scatter</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var data = {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [{
+        label: 'My First dataset',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: [0, 10, 5, 2, 20, 30, 45]
+      }]
+    };
+    var baseConfig = {
+      // The type of chart we want to create
+      type: 'line',
+      // https://www.chartjs.org/docs/latest/charts/
+      // 'line', 'bar', 'radar', 'pie', 'polarArea', 'bubble', 'scatter'
+
+      // The data for our dataset
+      data: data,
+
+      // Configuration options go here
+      options: {}
+    };
+    var chart = new Chart(ctx, baseConfig);
+
+    $typeButtons = [].slice.call(document.getElementsByClassName("change-button-type"));
+
+    $typeButtons.map(function($button) {
+      $button.addEventListener("click", function(ev) {
+        updateChartType(baseConfig, ev.target.dataset.type);
+      });
+    });
+
+    const updateChartType = function(config, chartType) {
+      config.type = chartType;
+      chart.destroy();
+      console.log(config);
+      chart = new Chart(ctx, config);
+    };
+  </script>
+</body>
+</html>
+
